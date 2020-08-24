@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - "stable"
+
+cache:
+  directories:
+    - "node_modules"
+
+install:
+  - npm install
+
+env: 
+  global:
+    mongoUrl= "mongodb+srv://sca:ySwems6Q87IRzoi5@cluster0.q88tk.mongodb.net/todo_app?retryWrites=true&w=majority"
+script:
+  - npm run test

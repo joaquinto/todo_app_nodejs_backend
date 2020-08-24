@@ -18,7 +18,7 @@ app.listen(port, ()=> console.log(`listening on port ${port}...`))
 const dotenv=require('dotenv');
 
 dotenv.config();
-const mongoUrl = process.env.mongoUrl
+const mongoUrl = process.env.mongoUrl 
 mongoose.connect(`${mongoUrl}`, { useNewUrlParser: true })
 .then(() => {  
     console.log('Successfully connected to MongoDB Atlas!') 
