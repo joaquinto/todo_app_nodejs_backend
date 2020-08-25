@@ -12,8 +12,7 @@ install:
 env: 
   global:
     MONGO_URL=mongodb+srv://sca:ySwems6Q87IRzoi5@cluster0.q88tk.mongodb.net/todo_app?retryWrites=true&w=majority
-script:
-  - npm run test
+
   
 
 before_script:
@@ -21,6 +20,7 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-
+script:
+  - npm run coveralls
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

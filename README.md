@@ -1,4 +1,6 @@
 # todo_app_nodejs_backend
+[![Build Status](https://travis-ci.org/joaquinto/todo_app_nodejs_backend.svg?branch=develop)](https://travis-ci.org/joaquinto/todo_app_nodejs_backend)
+[![Coverage Status](https://coveralls.io/repos/github/joaquinto/todo_app_nodejs_backend/badge.svg?branch=develop)](https://coveralls.io/github/joaquinto/todo_app_nodejs_backend?branch=develop)
 
 [![Build Status](https://travis-ci.org/joaquinto/todo_app_nodejs_backend.svg?branch=develop)](https://travis-ci.org/joaquinto/todo_app_nodejs_backend)
 [![Maintainability](https://api.codeclimate.com/v1/badges/6bdb4536f11b1f941779/maintainability)](https://codeclimate.com/github/joaquinto/todo_app_nodejs_backend/maintainability)
