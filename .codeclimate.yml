@@ -28,5 +28,5 @@ checks:
       threshold: 4
 exclude_patterns:
   - node_modules/
-  - app/test/
+  - test/
  

@@ -10,7 +10,7 @@ const url = '/todos'
 describe('POST TODO', () => {
     let request;
     beforeEach(() => {
-        request = chai.request(app);
+      request = chai.request(app);
     });
     it('should return todo object', async () => {
         const res = await request
@@ -81,5 +81,18 @@ describe('POST TODO', () => {
         res.body.should.have.property('status').equal(400)
         res.body.should.have.property('data')
         res.body.data[0].should.equal('description length must be at least 3 characters long')
+    })
+})
+
+describe('GET TODOS', ()=>{
+  let request;
+    beforeEach(() => {
+      request = chai.request(app);
+    })
+    it('should return all todos', async () => {
+      const res = await request.get(`${url}`);
+      res.body.should.have.property('message').equal('Todos fetched successfully')
+      res.body.should.have.property('data')
+      res.body.should.have.property('status').equal(200)
     })
 })
