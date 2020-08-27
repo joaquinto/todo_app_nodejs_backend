@@ -1,8 +1,9 @@
 module.exports = app =>{
     const todos = require('../controllers/todo.controller')
     const validation = require('../middlewares/validation')
-    const { todoValidation } = validation
-    const { createTodo, getTodos } = todos
+    const {isTodo} = require('../middlewares/todoAuthentication')
+    const { todoValidation, idValidation } = validation
+    const { createTodo, getOne } = todos
     app.post("/todos", todoValidation, createTodo)
-    app.get("/todos", getTodos)
+    app.get("/todos/:id", idValidation, isTodo, getOne)
 }

@@ -1,5 +1,5 @@
 const Todo = require('../services/todo.services')
-const { postTodo, findAll } = Todo
+const { postTodo, getOne } = Todo
 
 
 exports.createTodo = async(req,res)=>{
@@ -14,14 +14,12 @@ exports.createTodo = async(req,res)=>{
     }
 }
 
-
-exports.getTodos = async(req,res)=>{
+exports.getOne = async(req,res)=>{
     try{
-        const todo = await findAll()
-        res.status(200).send({message:'Todos fetched successfully', data:todo, status:200})
+        const todo = await getOne({...req.params})
+        res.status(200).send({message:'Todo gotten successfully', data:todo, status:200})
     }catch (error){
         console.log(error)
         res.status(500).send({message:'Oops! An error occured', data:error, status:500})
     }
 }
-
