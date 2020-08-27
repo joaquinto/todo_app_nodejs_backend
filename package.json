@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha",
+    "test": "NODE_ENV=test nyc mocha --timeout 1000 --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
   },
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/joaquinto/todo_app_nodejs_backend#readme",
   "dependencies": {
+    "@hapi/joi": "^15.1.1",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
