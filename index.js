@@ -17,9 +17,9 @@ app.listen(port, ()=> console.log(`listening on port ${port}...`))
 
 const dotenv=require('dotenv');
 
-dotenv.config();
+dotenv.config(); 
 const mongoUrl = process.env.MONGO_URL 
-mongoose.connect(`${mongoUrl}`, { useNewUrlParser: true })
+mongoose.connect(`${mongoUrl}`, { useNewUrlParser: true,  useUnifiedTopology: true })
 .then(() => {  
     console.log('Successfully connected to MongoDB Atlas!') 
 }) 
@@ -29,3 +29,6 @@ mongoose.connect(`${mongoUrl}`, { useNewUrlParser: true })
 });
 
 require('./app/router/todo.route')(app)
+
+
+module.exports = app
