@@ -5,7 +5,6 @@ exports.postTodo = async(newTodo)=>{
         const createTodo = await Todo.create(newTodo)
         return createTodo
     }catch (err){
-        console.log(error)
         return err
     }
 }
@@ -16,7 +15,15 @@ exports.getOne = async(todo)=>{
         const todo = await Todo.findOne({_id:id})
         return todo
     }catch (err){
-        console.log(err)
+        return err
+    }
+}
+
+exports.findAll = async()=>{
+    try{
+        const todos = await Todo.find()
+        return todos
+    }catch (err){
         return err
     }
 }

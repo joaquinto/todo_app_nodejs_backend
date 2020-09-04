@@ -10,7 +10,6 @@ exports.isTodo = async(req,res,next)=>{
         }
         return todo
     }catch (err){
-        console.log(err)
         return err
     }
 }
