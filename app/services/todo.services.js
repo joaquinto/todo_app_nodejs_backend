@@ -8,14 +8,15 @@ exports.postTodo = async(newTodo)=>{
         console.log(error)
         return err
     }
-} 
- 
-exports.findAll = async()=>{
+}
+
+exports.getOne = async(todo)=>{
+    const {id}=todo
     try{
-        const todos = await Todo.find()
-        return todos
+        const todo = await Todo.findOne({_id:id})
+        return todo
     }catch (err){
-        console.log(error)
+        console.log(err)
         return err
     }
 }

@@ -10,7 +10,7 @@ const url = '/todos'
 describe('POST TODO', () => {
     let request;
     beforeEach(() => {
-      request = chai.request(app);
+        request = chai.request(app);
     });
     it('should return todo object', async () => {
         const res = await request
@@ -84,15 +84,23 @@ describe('POST TODO', () => {
     })
 })
 
-describe('GET TODOS', ()=>{
+describe('Get A single todo', ()=>{
   let request;
-    beforeEach(() => {
-      request = chai.request(app);
-    })
-    it('should return all todos', async () => {
-      const res = await request.get(`${url}`);
-      res.body.should.have.property('message').equal('Todos fetched successfully')
-      res.body.should.have.property('data')
-      res.body.should.have.property('status').equal(200)
-    })
+  beforeEach(() => {
+    request = chai.request(app);
+  });
+  it('should return todo object', async () => {
+    const res = await request
+    .get(`${url}/5f47b79bb22ae51b74b54867`)
+    res.body.should.have.property('message').equal('Todo gotten successfully')
+    res.body.should.have.property('status').equal(200)
+    res.body.should.have.property('data')
+  })
+  it('should return todo not found', async () => {
+    const res = await request
+    .get(`${url}/5f47b70bb22ae51b74b54867`) 
+    res.body.should.have.property('message').equal('Todo not found')
+    res.body.should.have.property('status').equal(404)
+  })
+
 })

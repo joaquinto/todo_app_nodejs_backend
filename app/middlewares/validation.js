@@ -13,3 +13,15 @@ exports.todoValidation = async(req,res,next)=>{
     }
     res.status(400).send({message:'Bad Request', data:errors, status:400})
 }
+
+exports.idValidation = async(req,res,next)=>{
+    const idSchema = Joi.object().keys({
+        id : validationRules.title
+    });
+    
+    const errors = joiValidator(req.params, idSchema)
+    if (!errors) {
+        return next();
+    }
+    res.status(400).send({message:'Bad Request', data:errors, status:400})
+}

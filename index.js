@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const path = require('path')
 app.use(cors());
 app.use(bodyparser.json())
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public')) 
 
 app.get('/', (req, res) => {
     res.status(200).send({ message: 'Todo app up and running' })
