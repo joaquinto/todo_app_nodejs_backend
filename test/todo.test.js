@@ -104,3 +104,16 @@ describe('Get A single todo', ()=>{
   })
 
 })
+
+describe('GET TODOS', ()=>{
+  let request;
+    beforeEach(() => {
+      request = chai.request(app);
+    })
+    it('should return all todos', async () => {
+      const res = await request.get(`${url}`);
+      res.body.should.have.property('message').equal('Todos fetched successfully')
+      res.body.should.have.property('data')
+      res.body.should.have.property('status').equal(200)
+    })
+})
