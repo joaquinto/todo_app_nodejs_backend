@@ -96,6 +96,14 @@ describe('Get A single todo', ()=>{
     res.body.should.have.property('status').equal(200)
     res.body.should.have.property('data')
   })
+  it('should return incorrect length for id', async ()=>{
+    const res = await request
+    .get(`${url}/5f`)
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('id length must be at least 3 characters long')
+  })
   it('should return todo not found', async () => {
     const res = await request
     .get(`${url}/5f47b70bb22ae51b74b54867`) 
@@ -116,4 +124,128 @@ describe('GET TODOS', ()=>{
       res.body.should.have.property('data')
       res.body.should.have.property('status').equal(200)
     })
+})
+
+describe('Update Todo', ()=>{
+  let request;
+  beforeEach(() => {
+    request = chai.request(app);
+  });
+  it('should return todo object', async () => {
+    const res = await request
+    .put(`${url}/5f47b79bb22ae51b74b54867`)
+    .send(todoData.todo);
+    res.body.should.have.property('message').equal('Todo updated successfully')
+    res.body.should.have.property('status').equal(200)
+    res.body.should.have.property('data')
+  })
+
+  it('should return incorrect length for id', async ()=>{
+    const res = await request
+    .put(`${url}/5f`)
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('id length must be at least 3 characters long')
+  })
+
+  it('should return an error for empty title', async () => {
+    const res = await request
+      .put(`${url}/5f47b79bb22ae51b74b54867`)
+      .send(todoData.todoWithEmptyTitle);
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('title is not allowed to be empty')
+    res.body.data[1].should.equal('title length must be at least 3 characters long')
+  })
+
+  it('should return an error for missing title', async () => {
+      const res = await request
+        .put(`${url}/5f47b79bb22ae51b74b54867`)
+        .send(todoData.todoWithMissingTitle);
+      res.body.should.have.property('message').equal('Bad Request')
+      res.body.should.have.property('status').equal(400)
+      res.body.should.have.property('data')
+      res.body.data[0].should.equal('title is required')
+  })
+
+  it('should return an error for least title character count', async () => {
+    const res = await request
+      .put(`${url}/5f47b79bb22ae51b74b54867`)
+      .send(todoData.todoWithLessTitle);
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('title length must be at least 3 characters long')
+  })
+
+  it('should return an error for empty description', async () => {
+    const res = await request
+      .put(`${url}/5f47b79bb22ae51b74b54867`)
+      .send(todoData.todoWithEmptyDesc);
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('description is not allowed to be empty')
+    res.body.data[1].should.equal('description length must be at least 3 characters long')
+  })
+
+  it('should return an error for missing description', async () => {
+    const res = await request
+      .put(`${url}/5f47b79bb22ae51b74b54867`)
+      .send(todoData.todoWithMissingDesc);
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('description is required')
+  })
+
+  it('should return an error for least description character count', async () => {
+    const res = await request
+      .put(`${url}/5f47b79bb22ae51b74b54867`)
+      .send(todoData.todoWithLessDesc);
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('description length must be at least 3 characters long')
+  })
+
+  // it('should return todo not found', async () => {
+  //   const res = await request
+  //   .put(`${url}/5f47b79bb22ae51b74b54167`) 
+  //   res.body.should.have.property('message').equal('Todo not found')
+  //   res.body.should.have.property('status').equal(404)
+  // })
+})
+
+describe('Update Todo Status', ()=>{
+  let request;
+  beforeEach(() => {
+    request = chai.request(app);
+  });
+  it('should return todo object', async () => {
+    const res = await request
+    .put(`${url}/5f47b79bb22ae51b74b54867/status_update`)
+    .send(todoData.todo);
+    res.body.should.have.property('message').equal('Todo updated successfully')
+    res.body.should.have.property('status').equal(200)
+    res.body.should.have.property('data')
+  })
+
+  it('should return incorrect length for id', async ()=>{
+    const res = await request
+    .put(`${url}/5f/status_update`)
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('id length must be at least 3 characters long')
+  })
+
+  it('should return todo not found', async () => {
+    const res = await request
+    .put(`${url}/5f47b70bb22ae51b74b54867/status_update`) 
+    res.body.should.have.property('message').equal('Todo not found')
+    res.body.should.have.property('status').equal(404)
+  })
 })

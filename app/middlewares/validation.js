@@ -11,7 +11,7 @@ exports.todoValidation = async(req,res,next)=>{
     if (!errors) {
         return next();
     }
-    res.status(400).send({message:'Bad Request', data:errors, status:400})
+    return res.status(400).send({message:'Bad Request', data:errors, status:400})
 }
 
 exports.idValidation = async(req,res,next)=>{
@@ -23,5 +23,5 @@ exports.idValidation = async(req,res,next)=>{
     if (!errors) {
         return next();
     }
-    res.status(400).send({message:'Bad Request', data:errors, status:400})
+    return res.status(400).send({message:'Bad Request', data:errors, status:400})
 }
