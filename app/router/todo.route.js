@@ -5,10 +5,11 @@ module.exports = app =>{
     const validation = require('../middlewares/validation')
     const {isTodoValid} = require('../middlewares/todoAuthentication')
     const { todoValidation, idValidation } = validation
-    const { createTodo, getOne, getTodos, updateTodo, updateStatus  } = todos
+    const { createTodo, getOne, getTodos, updateTodo, updateStatus, deleteTodo} = todos
     app.post("/todos", todoValidation, createTodo)
     app.get("/todos/:id", idValidation, isTodoValid, getOne)
     app.get("/todos", getTodos)
     app.put("/todos/:id", idValidation, todoValidation, isTodoValid, updateTodo)
     app.put("/todos/:id/status_update", idValidation, isTodoValid, updateStatus)
+    app.delete("/todos/:id", idValidation, isTodoValid, deleteTodo)
 }

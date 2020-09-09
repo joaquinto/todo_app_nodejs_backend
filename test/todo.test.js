@@ -86,12 +86,14 @@ describe('POST TODO', () => {
 
 describe('Get A single todo', ()=>{
   let request;
-  beforeEach(() => {
+  beforeEach(async () => {
     request = chai.request(app);
+    const resq = await chai.request(app).get(`${url}`)
+    todoId = resq.body.data[0]._id
   });
   it('should return todo object', async () => {
     const res = await request
-    .get(`${url}/5f47b79bb22ae51b74b54867`)
+    .get(`${url}/${todoId}`)
     res.body.should.have.property('message').equal('Todo gotten successfully')
     res.body.should.have.property('status').equal(200)
     res.body.should.have.property('data')
@@ -128,12 +130,14 @@ describe('GET TODOS', ()=>{
 
 describe('Update Todo', ()=>{
   let request;
-  beforeEach(() => {
+  beforeEach(async () => {
     request = chai.request(app);
+    const resq = await chai.request(app).get(`${url}`)
+    todoId = resq.body.data[0]._id
   });
   it('should return todo object', async () => {
     const res = await request
-    .put(`${url}/5f47b79bb22ae51b74b54867`)
+    .put(`${url}/${todoId}`)
     .send(todoData.todo);
     res.body.should.have.property('message').equal('Todo updated successfully')
     res.body.should.have.property('status').equal(200)
@@ -151,7 +155,7 @@ describe('Update Todo', ()=>{
 
   it('should return an error for empty title', async () => {
     const res = await request
-      .put(`${url}/5f47b79bb22ae51b74b54867`)
+      .put(`${url}/5f47b79jh22ae51b74b54867`)
       .send(todoData.todoWithEmptyTitle);
     res.body.should.have.property('message').equal('Bad Request')
     res.body.should.have.property('status').equal(400)
@@ -221,12 +225,14 @@ describe('Update Todo', ()=>{
 
 describe('Update Todo Status', ()=>{
   let request;
-  beforeEach(() => {
+  beforeEach(async () => {
     request = chai.request(app);
+    const resq = await chai.request(app).get(`${url}`)
+    todoId = resq.body.data[0]._id
   });
   it('should return todo object', async () => {
     const res = await request
-    .put(`${url}/5f47b79bb22ae51b74b54867/status_update`)
+    .put(`${url}/${todoId}/status_update`)
     .send(todoData.todo);
     res.body.should.have.property('message').equal('Todo updated successfully')
     res.body.should.have.property('status').equal(200)
@@ -248,4 +254,52 @@ describe('Update Todo Status', ()=>{
     res.body.should.have.property('message').equal('Todo not found')
     res.body.should.have.property('status').equal(404)
   })
+})
+
+describe('Delete Todo', ()=>{
+  let request;
+  beforeEach(async () => {
+    request = chai.request(app)
+    const resq = await chai.request(app).get(`${url}`)
+    todoId = resq.body.data[0]._id
+  });
+  it('should return todo object', async () => {
+    const res = await request
+    .delete(`${url}/${todoId}`)
+    .send(todoData.todo);
+    res.body.should.have.property('message').equal('Todo deleted successfully')
+    res.body.should.have.property('status').equal(200)
+    res.body.should.have.property('data')
+  })
+
+  it('should return incorrect length for id', async ()=>{
+    const res = await request
+    .delete(`${url}/5f`)
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('id length must be at least 3 characters long')
+  })
+
+  it('should return todo not found', async () => {
+    const res = await request
+    .delete(`${url}/5f47b70bb22ae51b74b54867`) 
+    res.body.should.have.property('message').equal('Todo not found')
+    res.body.should.have.property('status').equal(404)
+  })
+
+  
+})
+
+describe('Welcome', ()=>{
+  let request;
+  beforeEach(async () => {
+    request = chai.request(app)
+  });
+  it('should return welcome object', async () => {
+    const res = await request
+    .get('/')
+    res.body.should.have.property('message').equal('Todo app up and running')
+  })
+
 })
