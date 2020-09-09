@@ -1,14 +1,15 @@
 const Todo = require('../models/todo.model')
 
-exports.isTodo = async(req,res,next)=>{
+exports.isTodoValid = async(req,res,next)=>{
     try{
         const todo = await Todo.find({_id:req.params.id})
-        if(todo.length>0){
-            return next()
-        }else{
-            res.status(404).send({message:'Todo not found', status:404})
+        if(todo.length<1){
+            
+            return res.status(404).send({message:'Todo not found', status:404})
+            
         }
-        return todo
+        req.completed = todo[0].completed
+        return next()
     }catch (err){
         return err
     }

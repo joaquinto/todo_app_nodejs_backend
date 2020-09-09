@@ -5,6 +5,7 @@ const todoSchema = Schema({
   description: { type: String, required: true }, 
   completed: { type: Boolean, required: true },
   createdAt: { type: Date, required: true },
+  updatedAt: { type: Date },
 });
 
 module.exports = mongoose.model('Todo', todoSchema)  

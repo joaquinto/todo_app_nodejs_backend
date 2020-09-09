@@ -23,10 +23,8 @@ mongoose.connect(`${mongoUrl}`, { useNewUrlParser: true,  useUnifiedTopology: tr
 .then(() => {  
     console.log('Successfully connected to MongoDB Atlas!') 
 }) 
-.catch((error) => {
-    console.log('Unable to connect to MongoDB Atlas!')
-    console.error(error)
-});
+.catch(() => {
+})
 
 require('./app/router/todo.route')(app)
 
