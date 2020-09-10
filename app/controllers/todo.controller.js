@@ -1,5 +1,5 @@
 const Todo = require('../services/todo.services')
-const { postTodo, getOne, findAll, updateTodo, toggleTodoStatus } = Todo
+const { postTodo, getOne, findAll, updateTodo, toggleTodoStatus, deleteTodo } = Todo
 
 exports.createTodo = async(req,res)=>{
     try{
@@ -44,6 +44,15 @@ exports.updateStatus = async(req,res)=>{
         let completed = !req.completed
         const updatedTodo = await toggleTodoStatus(completed, req.params.id)
         return res.status(200).send({message:'Todo updated successfully', data:updatedTodo, status:200})
+    }catch(err){
+        return res.status(500).send({message:' Oops! an error occured', data:err, status:500})
+    }
+}
+
+exports.deleteTodo = async(req,res)=>{
+    try{
+        const delTodo = await deleteTodo(req.params.id)
+        return res.status(200).send({message:'Todo deleted successfully', data:delTodo, status:200})
     }catch(err){
         return res.status(500).send({message:' Oops! an error occured', data:err, status:500})
     }

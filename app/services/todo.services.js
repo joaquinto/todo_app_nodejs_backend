@@ -50,4 +50,13 @@ exports.toggleTodoStatus = async(completed, id)=>{
     }catch (err){
         return err
     }
+} 
+
+exports.deleteTodo = async(id)=>{
+    try{
+        const delTodo = await Todo.deleteOne({_id:id})
+        return delTodo
+    }catch (err){
+        return err
+    }
 }

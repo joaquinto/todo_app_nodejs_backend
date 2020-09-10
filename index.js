@@ -9,7 +9,7 @@ app.use(bodyparser.json())
 app.use(express.static(__dirname + '/public')) 
 
 app.get('/', (req, res) => {
-    res.status(200).send({ message: 'Todo app up and running' })
+    return res.status(200).send({ message: 'Todo app up and running' })
 });
 
 const port = process.env.PORT || 8085       
