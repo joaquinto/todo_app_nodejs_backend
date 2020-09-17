@@ -25,3 +25,15 @@ exports.idValidation = async(req,res,next)=>{
     }
     return res.status(400).send({message:'Bad Request', data:errors, status:400})
 }
+
+exports.queryValidation = async(req,res,next)=>{
+    const statusSchema =  validationRules.isCompleted
+    if(req.query.isCompleted){
+        const errors = joiValidator(req.query.isCompleted.toLowerCase(), statusSchema)
+        if (!errors) {
+            return next();
+        }
+        return res.status(400).send({message:'Bad Request', data:errors, status:400})
+    }
+    return next()
+}

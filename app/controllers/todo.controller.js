@@ -23,7 +23,7 @@ exports.getOne = async(req,res)=>{
 
 exports.getTodos = async(req,res)=>{
     try{
-        const todo = await findAll()
+        const todo = await findAll({...req.query})
         return res.status(200).send({message:'Todos fetched successfully', data:todo, status:200})
     }catch (error){
         return res.status(500).send({message:'Oops! An error occured', data:error, status:500})

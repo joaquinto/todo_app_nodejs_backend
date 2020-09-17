@@ -19,8 +19,13 @@ exports.getOne = async(todo)=>{
     }
 }
 
-exports.findAll = async()=>{
+exports.findAll = async(query)=>{
+    const {isCompleted} = query
     try{
+        if(isCompleted){
+            const todos = await Todo.find({completed:isCompleted})
+            return todos
+        }
         const todos = await Todo.find()
         return todos
     }
