@@ -4,7 +4,6 @@ const app = require('../index')
 const todoData = require('./testData/todoData')
 chai.should()
 chai.use(chaiHttp)
-
 const url = '/todos'
 
 describe('POST TODO', () => {
@@ -115,6 +114,39 @@ describe('Get A single todo', ()=>{
 
 })
 
+describe('Update Todo Status', ()=>{
+  let request;
+  beforeEach(async () => {
+    request = chai.request(app);
+    const resq = await chai.request(app).get(`${url}`)
+    todoId = resq.body.data[0]._id
+  });
+  it('should return todo object', async () => {
+    const res = await request
+    .put(`${url}/${todoId}/status_update`)
+    .send(todoData.todo);
+    res.body.should.have.property('message').equal('Todo updated successfully')
+    res.body.should.have.property('status').equal(200)
+    res.body.should.have.property('data')
+  })
+
+  it('should return incorrect length for id', async ()=>{
+    const res = await request
+    .put(`${url}/5f/status_update`)
+    res.body.should.have.property('message').equal('Bad Request')
+    res.body.should.have.property('status').equal(400)
+    res.body.should.have.property('data')
+    res.body.data[0].should.equal('id length must be at least 3 characters long')
+  })
+
+  it('should return todo not found', async () => {
+    const res = await request
+    .put(`${url}/5f47b70bb22ae51b74b54867/status_update`) 
+    res.body.should.have.property('message').equal('Todo not found')
+    res.body.should.have.property('status').equal(404)
+  })
+})
+
 describe('GET TODOS', ()=>{
   let request;
     beforeEach(() => {
@@ -125,6 +157,39 @@ describe('GET TODOS', ()=>{
       res.body.should.have.property('message').equal('Todos fetched successfully')
       res.body.should.have.property('data')
       res.body.should.have.property('status').equal(200)
+    })
+    it('should return isCompleted invalid length', async () =>{
+      const res = await request
+      .get(`${url}?isCompleted=fa`)
+      res.body.should.have.property('message').equal('Bad Request')
+      res.body.should.have.property('status').equal(400)
+      res.body.should.have.property('data')
+      res.body.data[0].should.equal('value must be one of [true, false]')
+      res.body.data[1].should.equal('value length must be at least 3 characters long')
+    })
+    it('should return invalid isCompleted value', async () =>{
+      const res = await request
+      .get(`${url}?isCompleted=completed`)
+      res.body.should.have.property('message').equal('Bad Request')
+      res.body.should.have.property('status').equal(400)
+      res.body.should.have.property('data')
+      res.body.data[0].should.equal('value must be one of [true, false]')
+    })
+    it('should return all completed todo objects', async () =>{
+      const res = await request
+      .get(`${url}?isCompleted=true`)
+      res.body.should.have.property('message').equal('Todos fetched successfully')
+      res.body.should.have.property('data')
+      res.body.should.have.property('status').equal(200)
+      res.body.data[0].completed.should.equal(true)
+    })
+    it('should return all uncompleted todo objects', async () =>{
+      const res = await request
+      .get(`${url}?isCompleted=false`)
+      res.body.should.have.property('message').equal('Todos fetched successfully')
+      res.body.should.have.property('data')
+      res.body.should.have.property('status').equal(200)
+      res.body.data[0].completed.should.equal(false)
     })
 })
 
@@ -221,39 +286,6 @@ describe('Update Todo', ()=>{
   //   res.body.should.have.property('message').equal('Todo not found')
   //   res.body.should.have.property('status').equal(404)
   // })
-})
-
-describe('Update Todo Status', ()=>{
-  let request;
-  beforeEach(async () => {
-    request = chai.request(app);
-    const resq = await chai.request(app).get(`${url}`)
-    todoId = resq.body.data[0]._id
-  });
-  it('should return todo object', async () => {
-    const res = await request
-    .put(`${url}/${todoId}/status_update`)
-    .send(todoData.todo);
-    res.body.should.have.property('message').equal('Todo updated successfully')
-    res.body.should.have.property('status').equal(200)
-    res.body.should.have.property('data')
-  })
-
-  it('should return incorrect length for id', async ()=>{
-    const res = await request
-    .put(`${url}/5f/status_update`)
-    res.body.should.have.property('message').equal('Bad Request')
-    res.body.should.have.property('status').equal(400)
-    res.body.should.have.property('data')
-    res.body.data[0].should.equal('id length must be at least 3 characters long')
-  })
-
-  it('should return todo not found', async () => {
-    const res = await request
-    .put(`${url}/5f47b70bb22ae51b74b54867/status_update`) 
-    res.body.should.have.property('message').equal('Todo not found')
-    res.body.should.have.property('status').equal(404)
-  })
 })
 
 describe('Delete Todo', ()=>{
