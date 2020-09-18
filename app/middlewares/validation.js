@@ -27,13 +27,18 @@ exports.idValidation = async(req,res,next)=>{
 }
 
 exports.queryValidation = async(req,res,next)=>{
-    const statusSchema =  validationRules.isCompleted
-    if(req.query.isCompleted){
-        const errors = joiValidator(req.query.isCompleted.toLowerCase(), statusSchema)
-        if (!errors) {
-            return next();
-        }
-        return res.status(400).send({message:'Bad Request', data:errors, status:400})
+    if(req.query.isCompleted){req.query.isCompleted = req.query.isCompleted.toLowerCase()}
+    const statusSchema =  Joi.object().keys({
+        isCompleted: validationRules.isCompleted,
+        from_date: validationRules.from_date,
+        to_date: validationRules.to_date
+        
+    }).and('from_date', 'to_date');  
+    
+    const errors = joiValidator(req.query, statusSchema)
+    if (!errors) {
+        return next();
     }
-    return next()
+    return res.status(400).send({message:'Bad Request', data:errors, status:400})
+    
 }

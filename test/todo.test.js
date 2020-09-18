@@ -164,8 +164,8 @@ describe('GET TODOS', ()=>{
       res.body.should.have.property('message').equal('Bad Request')
       res.body.should.have.property('status').equal(400)
       res.body.should.have.property('data')
-      res.body.data[0].should.equal('value must be one of [true, false]')
-      res.body.data[1].should.equal('value length must be at least 3 characters long')
+      res.body.data[0].should.equal('isCompleted must be one of [true, false]')
+      res.body.data[1].should.equal('isCompleted length must be at least 3 characters long')
     })
     it('should return invalid isCompleted value', async () =>{
       const res = await request
@@ -173,7 +173,7 @@ describe('GET TODOS', ()=>{
       res.body.should.have.property('message').equal('Bad Request')
       res.body.should.have.property('status').equal(400)
       res.body.should.have.property('data')
-      res.body.data[0].should.equal('value must be one of [true, false]')
+      res.body.data[0].should.equal('isCompleted must be one of [true, false]')
     })
     it('should return all completed todo objects', async () =>{
       const res = await request
@@ -190,6 +190,31 @@ describe('GET TODOS', ()=>{
       res.body.should.have.property('data')
       res.body.should.have.property('status').equal(200)
       res.body.data[0].completed.should.equal(false)
+    })
+    it('should return invalid from_date value', async () =>{
+      const res = await request
+      .get(`${url}?from_date=hij`)
+      res.body.should.have.property('message').equal('Bad Request')
+      res.body.should.have.property('status').equal(400)
+      res.body.should.have.property('data')
+      res.body.data[0].should.equal('from_date must be a valid ISO 8601 date')
+      res.body.data[1].should.equal('value contains [from_date] without its required peers [to_date]')
+    })
+    it('should return from_date must come with to_date', async () =>{
+      const res = await request
+      .get(`${url}?from_date=2020-09-17`)
+      res.body.should.have.property('message').equal('Bad Request')
+      res.body.should.have.property('status').equal(400)
+      res.body.should.have.property('data')
+      res.body.data[0].should.equal('value contains [from_date] without its required peers [to_date]')
+    })
+    it('should return invalid to_date value', async () =>{
+      const res = await request
+      .get(`${url}?to_date=hij`)
+      res.body.should.have.property('message').equal('Bad Request')
+      res.body.should.have.property('status').equal(400)
+      res.body.should.have.property('data')
+      res.body.data[0].should.equal('to_date must be a valid ISO 8601 date')
     })
 })
 
