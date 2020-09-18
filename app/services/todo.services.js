@@ -20,8 +20,16 @@ exports.getOne = async(todo)=>{
 }
 
 exports.findAll = async(query)=>{
-    const {isCompleted} = query
+    const {isCompleted, from_date, to_date} = query
     try{
+        if(isCompleted && from_date){
+            const todos = await Todo.find({createdAt:{ $gte: new Date(new Date(from_date).setHours(00, 00, 00)), $lte: new Date(new Date(to_date).setHours(23, 59, 59)) }, completed:isCompleted})
+            return todos
+        }
+        if(from_date){ 
+            const todos = await Todo.find({createdAt:{ $gte: new Date(new Date(from_date).setHours(00, 00, 00)), $lte: new Date(new Date(to_date).setHours(23, 59, 59)) }})
+            return todos
+        }
         if(isCompleted){
             const todos = await Todo.find({completed:isCompleted})
             return todos
